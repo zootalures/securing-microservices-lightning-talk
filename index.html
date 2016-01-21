@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Securing Microservices</title>
+
+    <meta name="description" content="Securing microservice architectures">
+    <meta name="author" content="Owen Cliffe">
+
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="counter.css">
+
+    <link rel="stylesheet" href="css/theme/oracle.css" id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+    <script src="js/jquery-2.2.0.min.js"></script>
+
+    <script src="js/springy.js"></script>
+    <script src="js/springyui.js"></script>
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+    <script>
+        var fragshowfns = {};
+    </script>
+</head>
+
+<body>
+
+<div class="reveal">
+    <div class="slides">
+        <section class="">
+            <h2>Security and Microservices</h2>
+
+            <p>Owen Cliffe, 2016</p>
+            <img src="oracle-logo.png" width="500px"/>
+        </section>
+
+
+        <section class="">
+
+            <h2>Monolithic</h2>
+
+
+            <img border="0" class="fragment" src="hex.png">
+            <img border="0"  class="fragment" width="256" src="db.png">
+
+
+        </section>
+
+        <section class="">
+
+            <h2>Microservices</h2>
+
+            <script>
+                var addDBs;
+
+                fragshowfns["graph1"] = function () {
+                    var graph = new Springy.Graph();
+                    jQuery(function () {
+                        jQuery('#springydemo').springy({
+                            graph: graph,
+                            damping: 0.2
+                        });
+                    });
+
+                    var size = 64;
+                    var s1 = graph.newNode({image: {src: "hex.png", width: size, height: size}});
+                    var s2 = graph.newNode({image: {src: "hex.png", width: size, height: size}});
+                    var s3 = graph.newNode({image: {src: "hex.png", width: size, height: size}});
+
+                    graph.newEdge(s1, s2, {color: '#00A0B0'});
+                    graph.newEdge(s1, s3, {color: '#00A0B0'});
+                    graph.newEdge(s2, s3, {color: '#00A0B0'});
+
+
+                    fragshowfns["newnodes"] = function () {
+                        var s4 = graph.newNode({image: {src: "hex.png", width: size, height: size}});
+                        var s5 = graph.newNode({image: {src: "hex.png", width: size, height: size}});
+                        var s6 = graph.newNode({image: {src: "hex.png", width: size, height: size}});
+                        var s7 = graph.newNode({image: {src: "hex.png", width: size, height: size}});
+                        graph.newEdge(s2, s4, {color: '#00A0B0'});
+                        graph.newEdge(s4, s5, {color: '#00A0B0'});
+                        graph.newEdge(s4, s6, {color: '#00A0B0'});
+                        graph.newEdge(s7, s6, {color: '#00A0B0'});
+                        graph.newEdge(s7, s3, {color: '#00A0B0'});
+
+
+                        fragshowfns["dbnodes"] = addDBs = function () {
+                            var db1 = graph.newNode({image: {src: "db.png", width: size, height: size}});
+                            graph.newEdge(s3, db1);
+                            var db2 = graph.newNode({image: {src: "db.png", width: size, height: size}});
+
+                            graph.newEdge(s5, db2);
+                            var db3 = graph.newNode({image: {src: "db.png", width: size, height: size}});
+
+                            graph.newEdge(s6, db3);
+
+                        }
+                    }
+                }
+
+
+            </script>
+
+
+            <canvas data-fragid="graph1" class="fragment" id="springydemo" width="800" height="600"></canvas>
+            <p class="fragment" data-fragid="newnodes"></p>
+
+            <p class="fragment" data-fragid="dbnodes"></p>
+
+            <p class="fragment" data-fragid="newnodes"></p>
+
+        </section>
+        <section>
+            <h2>Authentication &amp; Access Control</h2>
+
+            <div style="position:relative; height: 300px; width: 800px;" >
+                <img  style="position:absolute; left: 150px; top: 0; " class="fragment" src="acl-base.png"/>
+                <img  style="position:absolute; left: 150px; top: 0;" class="fragment" src="acl-overlay.png"/>
+            </div>
+        </section>
+
+        <section>
+            <h2> Data Security</h2>
+            <img  class="fragment" src="data-sec.png"/>
+        </section>
+
+        <section>
+            <h2> Attack Surface </h2>
+            <div style="position:relative; height: 600px; width: 800px;" >
+
+                <img width="600"  style="position:absolute; left: 150px; top: 0px;" class="fragment" src="services-network.png"/>
+                <img width="550" style="position:absolute; left: 205px; top: 100px;" class="fragment" src="networking.png"/>
+            </div>
+        </section>
+        </section>
+
+        <section>
+            <h2>Audit/Governance</h2>
+            <div style="position:relative; height: 400px; width: 600px;" >
+
+                <img  style="position:absolute; left: 150px; top: 0; " class="fragment" src="logging-network.png"/>
+                <img  style="position:absolute; left: 150px; top: 0;" class="fragment" src="logging-overlay.png"/>
+            </div>
+
+        </section>
+        <section>
+            <h2>Software Correctness</h2>
+            <div style="position:relative; height: 300px; width: 800px;" >
+                <img  style="position:absolute; left: 150px; top: 0; " class="fragment" src="shiney-new.png"/>
+                <img  style="position:absolute; left: 150px; top: 0;" class="fragment" src="mouldy-old.png"/>
+                <img  style="position:absolute; left: 450px; top: 0; " class="fragment" src="ms-shiney-new.png"/>
+                <img  style="position:absolute; left: 450px; top: 0;" class="fragment" src="ms-mouldy-old.png"/>
+                <img  style="position:absolute; left: 450px; top: 0; " class="fragment" src="ms-shiney-new.png"/>
+            </div>
+
+        </section>
+        <section>
+            <h2>In summary</h2>
+            <ul>
+                <li>(Much) more complex than monolithic</li>
+                <li>Few tools to help you out</li>
+                <li>Consistency and good patterns important</li>
+                <li>Can get easier if you do it right</li>
+                <li>Can lead to more secure systems</li>
+            </ul>
+
+        </section>
+
+    </div>
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+
+    // Full list of configuration options available at:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        transition: 'convex', // none/fade/slide/convex/concave/zoom
+
+        // Optional reveal.js plugins
+        dependencies: [
+            {
+                src: 'lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            }
+            }
+
+        ]
+    });
+
+    Reveal.addEventListener('fragmentshown', function (event) {
+        if (event.fragment.dataset['fragid'] && fragshowfns[event.fragment.dataset['fragid']]) {
+            fragshowfns[event.fragment.dataset['fragid']]();
+        }
+    });
+
+</script>
+
+</body>
+</html>

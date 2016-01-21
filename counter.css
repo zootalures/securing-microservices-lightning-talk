@@ -1,0 +1,29 @@
+/*
+Styling the counter itself.
+Set image paths accordingly.
+*/
+
+.flip-counter .cd{
+    display: inline-block;
+}
+
+.flip-counter .digit {
+    background: url('img/digits.png') 0 0 no-repeat;
+    width: 30px;
+}
+
+.flip-counter .t {
+    background-position:0 0;
+    height:20px
+}
+
+.flip-counter .b {
+    background-position: 0 0;
+    height:40px
+}
+
+.flip-counter .s {
+    background-position:-53px -1030px;
+    width:14px;
+    height:103px
+}
