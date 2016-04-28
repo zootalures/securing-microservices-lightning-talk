@@ -47,28 +47,52 @@
 
 <div class="reveal">
     <div class="slides">
-        <section class="">
+        <section>
             <h2>Securing Microservices</h2>
-
             <p>Owen Cliffe, 2016</p>
             <img src="oracle-logo.png" width="500px"/>
         </section>
 
-
-        <section class="">
-
-            <h2>Monolithic</h2>
-
-
-            <img border="0" class="fragment" src="hex.png">
-            <img border="0"  class="fragment" width="256" src="db.png">
-
+        <section>
+            <h2> Why give this talk? </h2>
 
         </section>
 
-        <section class="">
+        <section>
+            <h2>What is secure?</h2>
+        </section>
+        <section>
+            <h2>Security (from PCI-DSS 3.0) </h2>
+            <ul>
+                <li class="fragment">Build and maintain a secure network</li>
+                <li class="fragment">Protect (cardholder) data</li>
+                <li class="fragment">Manage vulnerabilities</li>
+                <ul class="fragment">
+                    <li>Write secure software</li>
+                    <li>Patching</li>
+                </ul>
+                <li class="fragment">Implement strong access control measures</li>
+                <li class="fragment">Monitor and test security systems</li>
+                <li class="fragment">Maintain an information security policy</li>
+            </ul>
+        </section>
+        <section>
+            <h2>Monolithic Architectures</h2>
+            <img border="0" class="fragment" data-fragment-index="1" src="hex.png">
+            <img border="0" class="fragment" data-fragment-index="2" width="256" src="db.png">
+            <ul>
+                <li class="fragment" data-fragment-index="1"> Slow rate of change in software architecture</li>
+                <li class="fragment" data-fragment-index="2"> 1-2 databases</li>
+                <li class="fragment"> Static networking</li>
+                <li class="fragment"> Small internal external attack surface</li>
+                <li class="fragment"> Good platform support (i.e. JEE, Spring Security, Shiro, PicketLink HDIV etc. )
+                </li>
+            </ul>
+        </section>
 
-            <h2>Microservices</h2>
+        <section>
+
+            <h4>Microservice Architecures</h4>
 
             <script>
                 var addDBs;
@@ -122,60 +146,289 @@
             </script>
 
 
-            <canvas data-fragid="graph1" class="fragment" id="springydemo" width="800" height="600"></canvas>
+            <canvas data-fragment-index="0" data-fragid="graph1" class="fragment" id="springydemo" width="800"
+                    height="350"></canvas>
+            <p class="fragment" data-fragment-index="1" data-fragid="newnodes"></p>
+
+            <p class="fragment" data-fragment-index="2" data-fragid="dbnodes"></p>
+
             <p class="fragment" data-fragid="newnodes"></p>
 
-            <p class="fragment" data-fragid="dbnodes"></p>
-
-            <p class="fragment" data-fragid="newnodes"></p>
-
-        </section>
-        <section>
-            <h2>Authentication &amp; Access Control</h2>
-
-            <div style="position:relative; height: 300px; width: 800px;" >
-                <img  style="position:absolute; left: 150px; top: 0; " class="fragment" src="acl-base.png"/>
-                <img  style="position:absolute; left: 150px; top: 0;" class="fragment" src="acl-overlay.png"/>
-            </div>
+            <ul>
+                <li data-fragment-index="0" class="fragment"> Complex architecture</li>
+                <li data-fragment-index="1" class="fragment"> New stuff every week</li>
+                <li data-fragment-index="2" class="fragment"> Many data stores</li>
+                <li class="fragment"> Dynamic networking</li>
+                <li class="fragment"> No standardised support</li>
+            </ul>
         </section>
 
+
+
         <section>
-            <h2> Data Security</h2>
-            <img  class="fragment" src="data-sec.png"/>
+            <h2>Securing your networking </h2>
         </section>
 
         <section>
             <h2> Attack Surface </h2>
-            <div style="position:relative; height: 600px; width: 800px;" >
 
-                <img width="600"  style="position:absolute; left: 150px; top: 0px;" class="fragment" src="services-network.png"/>
-                <img width="550" style="position:absolute; left: 205px; top: 100px;" class="fragment" src="networking.png"/>
+            <div style="position:relative; height: 600px; width: 1000px;">
+                <!-- TODO: Monolithic diagram  -->
+
+                <img width="600" style="position:absolute; left: 150px; top: 0px;" class="fragment"
+                     src="services-network.png"/>
+                <img width="550" style="position:absolute; left: 205px; top: 100px;" class="fragment"
+                     src="networking.png"/>
             </div>
         </section>
+        <section>
+            <h2> Connection-level security</h2>
+            <ul>
+                <li class="fragment"> Dynamic network polices (e.g. AWS SecGroups)</li>
+                <li class="fragment"> Service placement & Physical boundaries (e.g. docker)</li>
+                <li class="fragment"> SSL with mututal authentication</li>
+            </ul>
+        </section>
+        <section>
+            <h2>Authentication</h2>
+            <ul>
+                <li class="fragment"> For third parties (users/API consumers) - OAuth (2)</li>
+                <li class="fragment"> Between services of your application</li>
+                <li class="fragment"> For user actions between services</li>
+            </ul>
         </section>
 
         <section>
-            <h2>Audit/Governance</h2>
-            <div style="position:relative; height: 400px; width: 600px;" >
+            <h2>Deep authentication</h2>
+            <div style="position:relative; height: 300px; width: 800px;">
+                <img style="position:absolute; left: 100px; top: 0; " class="fragment" src="acl-base.png"/>
+                <img style="position:absolute; left: 100px; top: 0;" class="fragment" src="acl-overlay.png"/>
+            </div>
+            <ul>
+                <li class="fragment"> Portable & transitive security assertions</li>
+                <li class="fragment"> Scoped by request/cause rather than link</li>
+                <li class="fragment"> Software needs to receive tokens and pass them down</li>
+                <li class="fragment"> AOP-style wrapping patterns work well(e.g. Spring interceptors)</li>
+                <li class="fragment"> Async code (e.g. node, RX) is harder</li>
+            </ul>
+        </section>
+        <section>
+            <h2> Using shared sessions</h2>
+            <!-- TODO Shared session diagram  -->
+            <ul>
+                <li class="fragment"> Session ID == Bearer token</li>
+                <li class="fragment"> Like web sessions e.g. spring session</li>
+                <li class="fragment"> Securing the session service (esp Redis)</li>
+                <li class="fragment"> Additional latency to fetch session data</li>
+                <li class="fragment"> Easy to manage revocation</li>
+            </ul>
+        </section>
+        <section>
+            <h2>Json Web Tokens (RFC7519)</h2>
+            <div class="fragment ">
+                <small><code><span
+                        style="color:darkred">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9</span>.
+                    <span style="color:darkgreen">eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9</span>.
+                    <span style="color:darkblue"> TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ</span></code>
+                </small>
+            </div>
+            <hr/>
+            <small>
+                <div class="fragment"><code style="color:darkred">{
+                    "alg": "HS256",
+                    "typ": "JWT"
+                    }</code>
+                </div>
+                <div class="fragment">
+                    <hr>
+                    <code style="color:darkgreen; align:left">
+<pre style="font-size: larger; box-shadow:none; border:none">{
+    "jti" : "123141215",
+    "sub": "userid:231231",
+    "aud" : "http://my-domain.com/internal",
+    "nbf" : "2016-01-01T11:59:00,000Z",
+    "exp" : "2016-01-01T12:30:00,000Z",
 
-                <img  style="position:absolute; left: 150px; top: 0; " class="fragment" src="logging-network.png"/>
-                <img  style="position:absolute; left: 150px; top: 0;" class="fragment" src="logging-overlay.png"/>
+    "name": "John Doe",
+    "admin": true,
+    "urn:app1:permissions" : ["SEE_STUFF", "DO_STUFF"]
+}</pre>
+                    </code>
+                </div>
+                <div class="fragment">
+                    <hr/>
+                    <code style="color:darkblue">base64(&lt;signature&gt;) </code>
+                </div>
+            </small>
+        </section>
+        <section>
+            <h2>Using cryptographic claims</h2>
+            <ul>
+                <li class="fragment"> Need to manage token expiry durations - no revocation</li>
+                <li class="fragment"> Shared Keys:
+                    <ul>
+                        <li> Difficult to strongly secure (all same) without HSM</li>
+                    </ul>
+                </li>
+                <li class="fragment"> PKI signatures:
+                    <ul>
+                        <li>1 signer & private key (at boundary) many verifiers</li>
+                        <li> RSA2048 signature (440 bytes)</li>
+                        <li> Signature and verification time :5ms/1ms</li>
+                        <li> Consider ECDSA (smaller & faster but less support)</li>
+                    </ul>
+                </li>
+                <li class="fragment"> May be public Oauth2 Bearer tokens </li>
+                <li class="fragment"> Renewal and long-running processes</li>
+            </ul>
+        </section>
+        <section>
+            <h2>Expiry bounds</h2>
+            <ul>
+                <li class="fragment"> Build time into architecture: </li>
+                <li class="fragment"> "fast" : 180s (e.g. API calls)</li>
+                <li class="fragment"> "medium" :  5400s (e.g. replication, redirect protocols (3DS, paypal))</li>
+                <li class="fragment"> "slow" : 86400s+ (e.g. reconciliation, batch) </li>
+            </ul>
+        </section>
+
+
+        <section>
+            <h2>Access Control </h2>
+            <ul>
+                <li class="fragment">Common language - e.g. subject/verb/object , URIs</li>
+                <li class="fragment">Embed in claim (e.g. Oauth Scope)</li>
+                <li class="fragment">Per service, just share principal ID</li>
+                <li class="fragment">Use shared config/policy store</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2> Data Security</h2>
+            <div>
+                <img data-fragment-index="1" class="fragment" src="data-sec.png"/>
+            </div>
+            <ul>
+                <li class="fragment" data-fragment-index="2">Separate & isolate secure data behind services</li>
+                <li class="fragment">Exploit service boundaries to secure data</li>
+                <li class="fragment">Strong, fine-grained acccess control</li>
+            </ul>
+        </section>
+
+
+        <section>
+            <h2>Vulnerability Management</h2>
+
+        </section>
+
+        <section>
+            <h2>Patching & Scanning: Integrating security with delivery</h2>
+            <div style="position:relative; height: 300px; width: 800px;">
+
+                <img style="position:absolute; left: 105px; top: 15px;" data-fragment-index="0" class="fragment"
+                     src="img/pipeline.png"/>
+                <img style="position:absolute; left: 100px; top: 0;" data-fragment-index="1" class="fragment"
+                     src="img/pipeline-2.png"/>
+            </div>
+
+            <ul>
+                <li class="fragment" data-fragment-index="2">Patching as software change</li>
+                <li class="fragment">Integrate security testing in pipeline</li>
+                <li class="fragment">Integrate functional testing with security patches</li>
+            </ul>
+
+        </section>
+
+        <section>
+            <h2>Building secure software</h2>
+        </section>
+
+        <section>
+            <h2>Software rot and complexity</h2>
+            <div style="position:relative; height: 300px; width: 800px;">
+                <img style="position:absolute; left: 150px; top: 0;" class="fragment" src="shiney-new.png"/>
+                <img style="position:absolute; left: 150px; top: 0;" class="fragment" src="mouldy-old.png"/>
+                <img style="position:absolute; left: 450px; top: 0;" class="fragment" src="ms-shiney-new.png"/>
+                <img style="position:absolute; left: 450px; top: 0;" class="fragment" src="ms-mouldy-old.png"/>
+                <img style="position:absolute; left: 450px; top: 0;" class="fragment" src="ms-shiney-new.png"/>
             </div>
 
         </section>
+
         <section>
-            <h2>Software Correctness</h2>
-            <div style="position:relative; height: 300px; width: 800px;" >
-                <img  style="position:absolute; left: 150px; top: 0; " class="fragment" src="shiney-new.png"/>
-                <img  style="position:absolute; left: 150px; top: 0;" class="fragment" src="mouldy-old.png"/>
-                <img  style="position:absolute; left: 450px; top: 0; " class="fragment" src="ms-shiney-new.png"/>
-                <img  style="position:absolute; left: 450px; top: 0;" class="fragment" src="ms-mouldy-old.png"/>
-                <img  style="position:absolute; left: 450px; top: 0; " class="fragment" src="ms-shiney-new.png"/>
+            <h2>Monitor systems</h2>
+        </section>
+
+        <section>
+            <h2>Audit Log Pattern </h2>
+            <div style="position:relative; height: 400px; width: 600px;">
+
+                <img style="position:absolute; left: 150px; top: 0; " class="fragment" data-fragment-index="0"
+                     src="logging-network.png"/>
+                <img style="position:absolute; left: 150px; top: 0;" class="fragment" data-fragment-index="2"
+                     src="logging-overlay.png"/>
             </div>
+            <ul>
+                <li class="fragment" data-fragment-index="1">Align with REST</li>
+                <li class="fragment" data-fragment-index="2">Log at boundaries (in and out)</li>
+                <li class="fragment" data-fragment-index="3">Correlate using transitive trace IDs</li>
+            </ul>
 
         </section>
+
         <section>
-            <h2>In summary</h2>
+            <h2>Reporting and documentation</h2>
+            <div style="position:relative; height: 400px; width: 400px;">
+                <img style="position:absolute; left:350px ;top:0;"  data-fragment-index="0" class="fragment" src="img/arch-diagram.png">
+                <img style="position:absolute; left:350px;top:0;"  data-fragment-index="1" class="fragment" src="img/wheel-of-doom-highlighted.png">
+            </div>
+            <ul>
+                <li class="fragment" data-fragment-index="1">make it automatic</li>
+                <li class="fragment" data-fragment-index="2">document services in-line (e.g. swagger)</li>
+
+            </ul>
+
+        </section>
+
+        <section>
+            <h2> Making it all work</h2>
+        </section>
+
+        <section data-background="#000000">
+            <div>
+                <img class="fragment" src="img/ChristaMcAuliffe.jpg">
+            </div>
+            <span class="fragment"><small>Christa McAuliffe (September 2, 1948 – January 28, 1986)</small></span>
+        </section>
+
+        <section>
+            <div>
+                <img src="img/nasa.png">
+
+            </div>
+            <div style="position: relative; height:  300px; width: 1024px; " class="fragment">
+                <img style="position: absolute;top: 0;  left: -100px" width="350"
+                     src="img/apollo-1-fire.jpg">
+                <img style="position: absolute;top: 0;  left: 300px" width="350"
+                     src="img/challenger.jpg">
+                <img style="position: absolute;top: 0;  left: 700px" width="350"
+                     src="img/columbia.jpg">
+            </div>
+        </section>
+
+        <section>
+            <h2 class="fragment"> NASA Safety Culture</h2>
+            <ul>
+                <li class="fragment">Reporting Culture - Report frequently without fear</li>
+                <li class="fragment">Just Culture - Treat people fairly</li>
+                <li class="fragment">Flexible Culture - Change and adapt to meet new demands</li>
+                <li class="fragment">Learning Culture - Learn from successes and failures</li>
+                <li class="fragment">Engaged Culture - Everybody doing their part</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>In summary </h2>
             <ul>
                 <li>(Much) more complex than monolithic</li>
                 <li>Few tools to help you out</li>
